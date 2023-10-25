@@ -1,23 +1,25 @@
 <script lang="ts" setup>
+import { useAuthentication } from '@/stores/Authentication'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../utils/configs/init'
 
 const router = useRouter()
 const email = ref('luian.ramirez.12@gmail.com')
 const password = ref('')
 const error = ref('')
+const isLogged = ref(false)
+
 const Login = async () => {
   try {
-    console.log(email.value)
-    console.log(password.value)
+    const auth = useAuthentication()
 
-    const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value)
+    await auth.singIn({
+      email: email.value,
+      password: password.value
+    })
 
-    // Signed in
-    const user = userCredential.user
-    console.log(user)
+    isLogged.value = auth.isLogged
+    router.push({ name: 'home' })
   } catch (err: any) {
     error.value = err.message
   }
@@ -30,6 +32,7 @@ const Login = async () => {
       <div class="col-md-8">
         <div class="card">
           <div class="card-header">Login</div>
+          <h1>{{ isLogged }}</h1>
           <div class="card-body">
             <div v-if="error" class="alert alert-danger">{{ error }}</div>
             <form action="#" @submit.prevent="Login">
