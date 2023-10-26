@@ -1,45 +1,124 @@
-import { Fragment } from "react"
+import { signOut } from "firebase/auth";
+import { Fragment } from "react";
+import { auth } from "../utils/configs/firebase";
+import { useNavigate } from "react-router-dom";
+import { ItinenaryEnum } from "../utils/enums/ItinearyEnum";
+import { Typography } from "@mui/material";
 
-export default function SidebarComponent() {
-    return (
-      <Fragment>
-        <div id="sidebar">
-          <h1>React Router Contacts</h1>
-          <div>
-            <form id="search-form" role="search">
-              <input
-                id="q"
-                aria-label="Search contacts"
-                placeholder="Search"
-                type="search"
-                name="q"
-              />
-              <div
-                id="search-spinner"
-                aria-hidden
-                hidden={true}
-              />
-              <div
-                className="sr-only"
-                aria-live="polite"
-              ></div>
-            </form>
-            <form method="post">
-              <button type="submit">New</button>
-            </form>
-          </div>
-          <nav>
-            <ul>
-              <li>
-                <a href={`/contacts/1`}>Your Name</a>
-              </li>
-              <li>
-                <a href={`/contacts/2`}>Your Friend</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <div id="detail"></div>
-      </Fragment>
-    );
-  }
+import Drawer from "@mui/material/Drawer";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+
+import ListItemText from "@mui/material/ListItemText";
+
+import LogoutIcon from "@mui/icons-material/Logout";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import LocationIcon from "@mui/icons-material/LocationOn";
+import CodeIcon from "@mui/icons-material/Code";
+import EventIcon from "@mui/icons-material/Event";
+import RestaurantIcon from "@mui/icons-material/Restaurant";
+import BusinessIcon from "@mui/icons-material/Business";
+
+
+type SidebarComponentProps = {
+  drawerWidth: number;
+};
+
+export default function SidebarComponent(props: SidebarComponentProps) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        // Sign-out successful.
+        navigate("/");
+        console.log("Signed out successfully");
+      })
+      .catch((error) => {
+        // An error happened.
+        console.log(error);
+      });
+  };
+
+  return (
+    <Fragment>
+      <Drawer
+        sx={{
+          width: props.drawerWidth,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: props.drawerWidth,
+            boxSizing: "border-box",
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar>
+          <CodeIcon />
+          <Typography variant="h6" noWrap component="div" ml={3} >
+            My App
+          </Typography>
+        </Toolbar>
+        <Divider />
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <LocationIcon />
+              </ListItemIcon>
+              <ListItemText primary={ItinenaryEnum.location} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText primary={ItinenaryEnum.event} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <RestaurantIcon />
+              </ListItemIcon>
+              <ListItemText primary={ItinenaryEnum.restaurant} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <List>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <BusinessIcon />
+              </ListItemIcon>
+              <ListItemText primary={ItinenaryEnum.enterprise} />
+            </ListItemButton>
+          </ListItem>
+        </List>
+
+        <Divider />
+        {/* Hasta abajo del sidebar */}
+        <List>
+          <ListItemButton onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Cerrar sesión" />
+          </ListItemButton>
+        </List>
+      </Drawer>
+    </Fragment>
+  );
+}

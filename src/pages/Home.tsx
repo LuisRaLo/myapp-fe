@@ -1,33 +1,17 @@
-import { signOut } from "firebase/auth";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../utils/configs/firebase";
+import { Fragment } from "react";
+import BackgroundComponent from "../components/BackgroundComponent";
+import { Typography } from "@mui/material";
 
 const HomePage = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    signOut(auth)
-      .then(() => {
-        // Sign-out successful.
-        navigate("/");
-        console.log("Signed out successfully");
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
-  };
-
   return (
-    <>
-      <nav>
-        <p>Welcome Home</p>
-
-        <div>
-          <button onClick={handleLogout}>Logout</button>
-        </div>
-      </nav>
-    </>
+    <Fragment>
+      <BackgroundComponent pageTitle="Bienvenido">
+          <Typography>
+            Bienvenido a la aplicación de itinerarios,
+            por favor selecciona una opción del menú.
+          </Typography>
+      </BackgroundComponent>
+    </Fragment>
   );
 };
 

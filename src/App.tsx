@@ -37,14 +37,16 @@ function App() {
             </RequireAuth>
           }
         />
+
         <Route
           path="/login"
-          element={currentUser ? <Navigate to="/" /> : <LoginPage />}
+          element={!currentUser ? <LoginPage /> : <Navigate to="/" />}
         />
         <Route
           path="/signup"
-          element={currentUser ? <Navigate to="/" /> : <SignupPage />}
+          element={!currentUser ? <SignupPage /> : <Navigate to="/" />}
         />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Fragment>
