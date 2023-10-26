@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 import SidebarComponent from "./SidebarComponent";
 
 type BackgroundComponentProps = {
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
   pageTitle?: string;
 };
 
@@ -31,16 +31,18 @@ export default function BackgroundComponent(props: BackgroundComponentProps) {
             </Typography>
           </Toolbar>
         </AppBar>
+
         <SidebarComponent drawerWidth={drawerWidth} />
+
         <Box
           component="main"
           sx={{
             flexGrow: 1,
             p: 3,
             width: { sm: `calc(100% - ${drawerWidth}px)` },
+
           }}
         >
-          <Toolbar />
           <Toolbar />
           {props.children}
         </Box>

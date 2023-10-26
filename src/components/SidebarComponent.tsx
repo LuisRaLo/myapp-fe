@@ -66,50 +66,50 @@ export default function SidebarComponent(props: SidebarComponentProps) {
         <Divider />
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/itinerary/1")}>
               <ListItemIcon>
                 <LocationIcon />
               </ListItemIcon>
-              <ListItemText primary={ItinenaryEnum.location} />
+              <ListItemText primary={ItinenaryEnum.places} />
             </ListItemButton>
           </ListItem>
         </List>
 
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/itinerary/2")}>
               <ListItemIcon>
                 <EventIcon />
               </ListItemIcon>
-              <ListItemText primary={ItinenaryEnum.event} />
+              <ListItemText primary={ItinenaryEnum.events} />
             </ListItemButton>
           </ListItem>
         </List>
 
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/itinerary/3")}>
               <ListItemIcon>
                 <RestaurantIcon />
               </ListItemIcon>
-              <ListItemText primary={ItinenaryEnum.restaurant} />
+              <ListItemText primary={ItinenaryEnum.restaurants} />
             </ListItemButton>
           </ListItem>
         </List>
 
         <List>
           <ListItem disablePadding>
-            <ListItemButton>
+            <ListItemButton onClick={() => navigate("/itinerary/4")}>
               <ListItemIcon>
                 <BusinessIcon />
               </ListItemIcon>
-              <ListItemText primary={ItinenaryEnum.enterprise} />
+              <ListItemText primary={ItinenaryEnum.enterprises} />
             </ListItemButton>
           </ListItem>
         </List>
 
         <Divider />
-        {/* Hasta abajo del sidebar */}
+
         <List>
           <ListItemButton onClick={handleLogout}>
             <ListItemIcon>

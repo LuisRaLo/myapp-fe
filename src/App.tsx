@@ -5,6 +5,7 @@ import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/Home";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { auth } from "./utils/configs/firebase";
+import ItineraryPage from "./pages/ItineraryPage";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -34,6 +35,14 @@ function App() {
           element={
             <RequireAuth>
               <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/itinerary/:id"
+          element={
+            <RequireAuth>
+              <ItineraryPage />
             </RequireAuth>
           }
         />
