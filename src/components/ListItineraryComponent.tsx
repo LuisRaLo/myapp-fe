@@ -104,6 +104,16 @@ export default function ListItineraryComponent(
     return <LoaderComponent />;
   }
 
+  if (itinerary.length === 0) {
+    return (
+      <Box>
+        <Typography variant="h6" noWrap component="div">
+          No itinerary
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box sx={{ height: 400, width: "100%" }}>
       <DataGrid

@@ -36,23 +36,27 @@ export default function ItineraryPage() {
           </Typography>
         </Button>
 
-        <ListItineraryComponent
-          type={parseInt(params.id)}
-          handleOpenUpdate={() => setOpenUpdate(true)}
-          handleOpenDelete={() => setOpenDelete(true)}
-          handleSetItinerarySelected={(itineraryId: IItinerary) =>
-            setItinerarySelected(itineraryId)
-          }
-        />
+          <ListItineraryComponent
+            type={parseInt(params.id)}
+            handleOpenUpdate={() => setOpenUpdate(true)}
+            handleOpenDelete={() => setOpenDelete(true)}
+            handleSetItinerarySelected={(itineraryId: IItinerary) =>
+              setItinerarySelected(itineraryId)
+            }
+          />
+        
 
         <Divider sx={{ my: 3 }} />
       </BackgroundComponent>
 
-      <ModalUpdateItinerary
-        open={openUpdate}
-        handleClose={() => setOpenUpdate(false)}
-        itinerarySelected={itinerarySelected}
-      />
+      {itinerarySelected !== undefined && (
+        <ModalUpdateItinerary
+          type={itineraryType}
+          open={openUpdate}
+          itinerarySelected={itinerarySelected}
+          handleClose={() => setOpenUpdate(false)}
+        />
+      )}
 
       <ModalAddItinerary
         open={openAdd}

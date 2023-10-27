@@ -6,4 +6,14 @@ interface IItinerary {
   pathImage: string;
 }
 
+export interface IItineraryForm {
+  name: string;
+  description: string;
+  location: {
+    lat: number;
+    lng: number;
+  };
+  pathImage: File | null;
+}
+
 export default IItinerary;
