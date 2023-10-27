@@ -2,9 +2,14 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import useItinerary from "../hooks/useItinerary";
 import { Button, Toolbar, Typography } from "@mui/material";
+import IItinerary from "../utils/interfaces/IItinerary";
+import LoaderComponent from "./LoaderComponent";
 
 type ListItineraryComponentProps = {
   type: number;
+  handleOpenUpdate: () => void;
+  handleOpenDelete: () => void;
+  handleSetItinerarySelected: (itinerary: IItinerary) => void;
 };
 
 export default function ListItineraryComponent(
@@ -68,10 +73,13 @@ export default function ListItineraryComponent(
             color="success"
             size="small"
             onClick={() => {
-              console.log(params.row);
+              props.handleSetItinerarySelected(params.row as IItinerary);
+              props.handleOpenUpdate!();
             }}
           >
-            Edit
+            <Typography variant="inherit" noWrap component="div">
+              Update
+            </Typography>
           </Button>
           &nbsp;
           <Button
@@ -79,18 +87,21 @@ export default function ListItineraryComponent(
             color="error"
             size="small"
             onClick={() => {
-              console.log(params.row);
+              props.handleSetItinerarySelected(params.row as IItinerary);
+              props.handleOpenDelete!();
             }}
           >
-            Delete
+            <Typography variant="inherit" noWrap component="div">
+              Delete
+            </Typography>
           </Button>
         </Toolbar>
       ),
     },
   ];
 
-  if (itinerary.length === 0) {
-    return <h1>Loading...</h1>;
+  if (!itinerary) {
+    return <LoaderComponent />;
   }
 
   return (
