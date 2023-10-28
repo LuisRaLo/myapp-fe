@@ -37,6 +37,21 @@ export default function ListItineraryComponent(
       type: "number",
       width: 100,
       editable: false,
+      renderCell: (params: GridValueGetterParams) => {
+        return (
+          <a
+            href={`https://www.google.com/maps/place/${params.value.lat},${params.value.lng}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Button variant="contained" color="primary" size="small">
+              <Typography variant="inherit" noWrap component="div">
+                Location
+              </Typography>
+            </Button>
+          </a>
+        );
+      },
     },
     {
       field: "pathImage",

@@ -23,14 +23,7 @@ export default function useUpdateItinerary() {
 
       const dataValidate = await formValidation(oldData, itineraryObjectForm);
 
-      console.log(
-        "=======================================================>",
-        dataValidate
-      );
-
       const update = await FireStoreHelper.updateItinerary(type, dataValidate);
-
-      console.log(update);
 
       if (update) {
         window.location.reload();
@@ -66,8 +59,11 @@ export default function useUpdateItinerary() {
       id: oldItinerary.id,
       name: "",
       description: "",
-      location: "",
-      pathImage: "",
+      location: {
+        lat: 0,
+        lng: 0,
+      },
+      pathImage: oldItinerary.pathImage,
     };
 
     if (newItinerary.name === "") itinerary.name = oldItinerary.name;
@@ -80,18 +76,20 @@ export default function useUpdateItinerary() {
     if (newItinerary.location.lat === 0 && newItinerary.location.lng === 0)
       itinerary.location = oldItinerary.location;
     else
-      itinerary.location = `${newItinerary.location.lat},${newItinerary.location.lng}`;
+      itinerary.location = {
+        lat: newItinerary.location.lat,
+        lng: newItinerary.location.lng,
+      };
 
-    if (newItinerary.pathImage) {
-      if (!(newItinerary.pathImage instanceof File))
-        itinerary.pathImage = oldItinerary.pathImage;
-
+    if (newItinerary.pathImage !== null) {
       const urlFile = await updateImage();
 
       if (urlFile === "Image upload error")
         itinerary.pathImage = oldItinerary.pathImage;
 
       itinerary.pathImage = urlFile;
+    } else {
+      itinerary.pathImage = oldItinerary.pathImage;
     }
 
     return itinerary;

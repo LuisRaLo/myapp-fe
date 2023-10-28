@@ -2,7 +2,10 @@ interface IItinerary {
   id: number;
   name: string;
   description?: string;
-  location?: string;
+  location?: {
+    lat: number;
+    lng: number;
+  };
   pathImage: string;
 }
 
@@ -13,7 +16,7 @@ export interface IItineraryForm {
     lat: number;
     lng: number;
   };
-  pathImage: File | null;
+  pathImage: File | null | string;
 }
 
 export default IItinerary;

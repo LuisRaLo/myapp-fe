@@ -30,25 +30,23 @@ type Props = {
 
 export default function ModalUpdateItinerary(props: Props) {
   const { open, itinerarySelected, handleClose, type } = props;
-
-  const [expanded, setExpanded] = useState<string | false>(false);
-
   const { itineraryObjectForm, setItineraryObjectForm, updateData } =
     useUpdateItinerary();
 
+  const [expanded, setExpanded] = useState<string | false>(false);
+
   useEffect(() => {
-    if (itinerarySelected === undefined) return;
-    setExpanded("panel1");
     setItineraryObjectForm({
-      name: itinerarySelected.name ?? "",
-      description: itinerarySelected.description ?? "",
-      location: {
-        lat: parseInt(itinerarySelected.location.split(",")[0]) ?? 0,
-        lng: parseInt(itinerarySelected.location.split(",")[1]) ?? 0,
-      },
-      pathImage: undefined
+      name: itinerarySelected.name,
+      description: itinerarySelected.description,
+      location: itinerarySelected.location,
+      pathImage: null,
     });
-  }, [itinerarySelected]);
+  }, [itinerarySelected, setItineraryObjectForm]);
+
+  useEffect(() => {
+    setExpanded("panel1");
+  }, [itinerarySelected, setExpanded]);
 
   const handleChange =
     (panel: string) => (_event: SyntheticEvent, isExpanded: boolean) => {
@@ -188,7 +186,15 @@ export default function ModalUpdateItinerary(props: Props) {
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <MapPickerComponent />
+                    <MapPickerComponent
+                      location={itinerarySelected.location}
+                      handleChangeLocation={(lat: number, lng: number) => {
+                        setItineraryObjectForm({
+                          ...itineraryObjectForm,
+                          location: { lat, lng },
+                        });
+                      }}
+                    />
                   </AccordionDetails>
                 </Accordion>
 

@@ -14,7 +14,13 @@ export default function ItineraryPage() {
   const [openAdd, setOpenAdd] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const [itinerarySelected, setItinerarySelected] = useState<IItinerary>();
+  const [itinerarySelected, setItinerarySelected] = useState<IItinerary>({
+    id: -1,
+    name: "",
+    description: "",
+    location: { lat: -12.0320607, lng: -77.058308 },
+    pathImage: "",
+  });
 
   return (
     <Fragment>
@@ -36,15 +42,14 @@ export default function ItineraryPage() {
           </Typography>
         </Button>
 
-          <ListItineraryComponent
-            type={parseInt(params.id)}
-            handleOpenUpdate={() => setOpenUpdate(true)}
-            handleOpenDelete={() => setOpenDelete(true)}
-            handleSetItinerarySelected={(itineraryId: IItinerary) =>
-              setItinerarySelected(itineraryId)
-            }
-          />
-        
+        <ListItineraryComponent
+          type={parseInt(params.id)}
+          handleOpenUpdate={() => setOpenUpdate(true)}
+          handleOpenDelete={() => setOpenDelete(true)}
+          handleSetItinerarySelected={(itineraryId: IItinerary) =>
+            setItinerarySelected(itineraryId)
+          }
+        />
 
         <Divider sx={{ my: 3 }} />
       </BackgroundComponent>
