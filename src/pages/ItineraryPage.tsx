@@ -7,6 +7,7 @@ import { Fragment, useState } from "react";
 import ModalUpdateItinerary from "../components/ModalUpdateItinerary";
 import ModalAddItinerary from "../components/ModalAddItinerary";
 import IItinerary from "../utils/interfaces/IItinerary";
+import ModalDeleteItinerary from "../components/ModalDeleteItinerary";
 
 export default function ItineraryPage() {
   const params = useParams();
@@ -69,6 +70,16 @@ export default function ItineraryPage() {
         handleClose={() => setOpenAdd(false)}
         itinerarySelected={itinerarySelected}
         itineraryData={itinerary}
+      />
+
+      <ModalDeleteItinerary
+        open={openDelete}
+        handleClose={function (): void {
+          setOpenDelete;
+        }}
+        handleOpen={function (): void {
+          setOpenDelete;
+        }}
       />
     </Fragment>
   );
