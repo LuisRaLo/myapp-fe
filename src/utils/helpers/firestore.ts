@@ -31,16 +31,38 @@ export default class FireStoreHelper {
 
   public static async updateItinerary(
     type: ItinenaryEnum,
+    id: number,
     itinerary: IItinerary
   ): Promise<boolean> {
     try {
-      const data = await this.getItinerary(type);
-      const index = data.findIndex((element) => element.id === itinerary.id);
-
       const documentRef = doc(firestore, "itinerary", type);
-      // Set the "capital" field of the city 'DC'
       await updateDoc(documentRef, {
-        [index]: itinerary,
+        [id]: itinerary,
+      });
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  public static async insertItinerary(
+    type: ItinenaryEnum,
+    itinerary: IItinerary
+  ): Promise<boolean> {
+    try {
+      const documentRef = doc(firestore, "itinerary", type);
+
+      const data = await this.getItinerary(type);
+
+      const newItinerary = {
+        ...itinerary,
+        id: data.length + 1,
+      };
+
+      await updateDoc(documentRef, {
+        [data.length]: newItinerary,
       });
 
       return true;

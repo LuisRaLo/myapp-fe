@@ -69,6 +69,7 @@ export default function ModalUpdateItinerary(props: Props) {
     return <div></div>;
   }
 
+  if (!open) return <></>;
   return (
     <div>
       <Modal

@@ -10,7 +10,7 @@ import IItinerary from "../utils/interfaces/IItinerary";
 
 export default function ItineraryPage() {
   const params = useParams();
-  const { itineraryType } = useItinerary(parseInt(params.id));
+  const { itineraryType, itinerary } = useItinerary(parseInt(params.id));
   const [openAdd, setOpenAdd] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -18,7 +18,7 @@ export default function ItineraryPage() {
     id: -1,
     name: "",
     description: "",
-    location: { lat: -12.0320607, lng: -77.058308 },
+    location: { lat: -12.054084888416659, lng: 77.14628445568849 },
     pathImage: "",
   });
 
@@ -65,14 +65,10 @@ export default function ItineraryPage() {
 
       <ModalAddItinerary
         open={openAdd}
+        type={itineraryType}
         handleClose={() => setOpenAdd(false)}
-        handleOpen={() => setOpenAdd(true)}
-      />
-
-      <ModalAddItinerary
-        open={openDelete}
-        handleClose={() => setOpenDelete(false)}
-        handleOpen={() => setOpenDelete(true)}
+        itinerarySelected={itinerarySelected}
+        itineraryData={itinerary}
       />
     </Fragment>
   );
