@@ -31,13 +31,16 @@ export default class FireStoreHelper {
 
   public static async updateItinerary(
     type: ItinenaryEnum,
-    id: number,
     itinerary: IItinerary
   ): Promise<boolean> {
     try {
+      const data = await this.getItinerary(type);
+      const index = data.findIndex((element) => element.id === itinerary.id);
+
       const documentRef = doc(firestore, "itinerary", type);
+      // Set the "capital" field of the city 'DC'
       await updateDoc(documentRef, {
-        [id]: itinerary,
+        [index]: itinerary,
       });
 
       return true;
