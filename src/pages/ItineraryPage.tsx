@@ -19,9 +19,10 @@ export default function ItineraryPage() {
     id: -1,
     name: "",
     description: "",
-    location: { lat: -12.054084888416659, lng: 77.14628445568849 },
+    location: { lat: 4.8048588, lng: -75.7549616 },
     pathImage: "",
   });
+  
 
   return (
     <Fragment>
