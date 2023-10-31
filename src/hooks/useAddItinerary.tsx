@@ -4,6 +4,7 @@ import StorageHelper from "../utils/helpers/storage";
 import IItinerary, { IItineraryForm } from "../utils/interfaces/IItinerary";
 import FireStoreHelper from "../utils/helpers/firestore";
 import { ItinenaryEnum } from "../utils/enums/ItinearyEnum";
+import { useNavigate } from "react-router-dom";
 
 export default function useAddItinerary() {
   const [itineraryObjectForm, setItineraryObjectForm] =
@@ -23,6 +24,8 @@ export default function useAddItinerary() {
     setItineraryObjectForm({ ...itineraryObjectForm, location: location });
   }, [location]);
 
+  const navigate = useNavigate();
+
   async function insertData(
     _event: SyntheticEvent,
     dataItinerary: IItinerary[],
@@ -33,15 +36,17 @@ export default function useAddItinerary() {
 
       const nextId = lookingNextId(dataItinerary);
 
+      console.log("1", nextId);
+
       const dataValidate = await formValidation(nextId);
 
       const update = await FireStoreHelper.insertItinerary(type, dataValidate);
 
       if (update) {
-        window.location.reload();
+        navigate(0);
+
         return alert("Itinerary inserted successfully");
       }
-
       return alert("Itinerary inserted error");
     } catch (error) {
       console.log(error);
@@ -95,10 +100,11 @@ export default function useAddItinerary() {
 
   function lookingNextId(itineraryData: IItinerary[]): number {
     let id: number = -1;
-    itineraryData.forEach((value: IItinerary) => {
-      if (id < value.id) id = value.id;
+    itineraryData.forEach((element) => {
+      if (element.id > id) id = element.id;
     });
-    return id;
+
+    return id + 1;
   }
 
   return {

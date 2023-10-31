@@ -74,12 +74,9 @@ export default function ItineraryPage() {
 
       <ModalDeleteItinerary
         open={openDelete}
-        handleClose={function (): void {
-          setOpenDelete;
-        }}
-        handleOpen={function (): void {
-          setOpenDelete;
-        }}
+        handleClose={() => setOpenDelete(false)}
+        itinerarySelected={itinerarySelected}
+        type={itineraryType}
       />
     </Fragment>
   );

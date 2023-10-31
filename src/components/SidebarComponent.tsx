@@ -60,7 +60,7 @@ export default function SidebarComponent(props: SidebarComponentProps) {
         <Toolbar>
           <CodeIcon />
           <Typography variant="h6" noWrap component="div" ml={3} >
-            My App
+          jardin-trip
           </Typography>
         </Toolbar>
         <Divider />

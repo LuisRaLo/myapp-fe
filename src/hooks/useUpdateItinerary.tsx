@@ -3,6 +3,7 @@ import StorageHelper from "../utils/helpers/storage";
 import IItinerary, { IItineraryForm } from "../utils/interfaces/IItinerary";
 import FireStoreHelper from "../utils/helpers/firestore";
 import { ItinenaryEnum } from "../utils/enums/ItinearyEnum";
+import { useNavigate } from "react-router-dom";
 
 export default function useUpdateItinerary() {
   const [itineraryObjectForm, setItineraryObjectForm] =
@@ -12,6 +13,8 @@ export default function useUpdateItinerary() {
       location: { lat: 0, lng: 0 },
       pathImage: null,
     });
+
+  const navigate = useNavigate();
 
   async function updateData(
     _event: SyntheticEvent,
@@ -24,15 +27,15 @@ export default function useUpdateItinerary() {
       const dataValidate = await formValidation(oldData, itineraryObjectForm);
 
       const update = await FireStoreHelper.updateItinerary(type, dataValidate);
-
       if (update) {
-        window.location.reload();
+        navigate(0);
         return alert("Itinerary updated successfully");
       }
 
       return alert("Itinerary update error");
     } catch (error) {
       console.log(error);
+      alert("Error: " + error.message);
     }
   }
 
@@ -73,7 +76,11 @@ export default function useUpdateItinerary() {
       itinerary.description = oldItinerary.description;
     else itinerary.description = newItinerary.description;
 
-    if (newItinerary.location.lat === 0 && newItinerary.location.lng === 0)
+    if (
+      (newItinerary.location.lat === 0 && newItinerary.location.lng === 0) ||
+      (newItinerary.location.lat === oldItinerary.location.lat &&
+        newItinerary.location.lng === oldItinerary.location.lat)
+    )
       itinerary.location = oldItinerary.location;
     else
       itinerary.location = {

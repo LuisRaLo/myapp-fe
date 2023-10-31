@@ -9,7 +9,7 @@ export default class FireStoreHelper {
   ): Promise<DocumentData[]> {
     if (!collectionName) return [];
 
-    const docRef = doc(firestore, "itinerary", collectionName);
+    const docRef = doc(firestore, "myApp", collectionName);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -19,11 +19,30 @@ export default class FireStoreHelper {
     }
   }
 
+  public static async insertItinerary(
+    type: ItinenaryEnum,
+    itinerary: IItinerary
+  ): Promise<boolean> {
+    try {
+      const documentRef = doc(firestore, "myApp", "itinerary");
+
+      const collection = await this.getCollection("itinerary");
+
+      await updateDoc(documentRef, {
+        [type]: [...collection[type], itinerary],
+      });
+
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
   public static async getItinerary(type: ItinenaryEnum): Promise<IItinerary[]> {
     const array: IItinerary[] = [];
-    const collection = await this.getCollection(type);
-    Object.keys(collection).forEach((key) => {
-      const element = collection[key];
+    const collection = await this.getCollection("itinerary");
+    collection[type].forEach((element: IItinerary) => {
       array.push(element);
     });
     return this.toDomain(array);
@@ -34,13 +53,18 @@ export default class FireStoreHelper {
     itinerary: IItinerary
   ): Promise<boolean> {
     try {
-      const data = await this.getItinerary(type);
-      const index = data.findIndex((element) => element.id === itinerary.id);
+      const documentRef = doc(firestore, "myApp", "itinerary");
 
-      const documentRef = doc(firestore, "itinerary", type);
-      // Set the "capital" field of the city 'DC'
+      const collection = await this.getCollection("itinerary");
+
+      const index = collection[type].findIndex(
+        (element: IItinerary) => element.id === itinerary.id
+      );
+
+      collection[type][index] = itinerary;
+
       await updateDoc(documentRef, {
-        [index]: itinerary,
+        [type]: collection[type],
       });
 
       return true;
@@ -50,22 +74,23 @@ export default class FireStoreHelper {
     }
   }
 
-  public static async insertItinerary(
+  public static async deleteItinerary(
     type: ItinenaryEnum,
     itinerary: IItinerary
   ): Promise<boolean> {
     try {
-      const documentRef = doc(firestore, "itinerary", type);
+      const documentRef = doc(firestore, "myApp", "itinerary");
 
-      const data = await this.getItinerary(type);
+      const collection = await this.getCollection("itinerary");
 
-      const newItinerary = {
-        ...itinerary,
-        id: data.length + 1,
-      };
+      const index = collection[type].findIndex(
+        (element: IItinerary) => element.id === itinerary.id
+      );
+
+      collection[type].splice(index, 1);
 
       await updateDoc(documentRef, {
-        [data.length]: newItinerary,
+        [type]: collection[type],
       });
 
       return true;

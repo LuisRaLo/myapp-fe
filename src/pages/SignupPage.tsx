@@ -1,7 +1,8 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, Fragment, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/configs/firebase";
+import { Toolbar, Typography } from "@mui/material";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -29,46 +30,55 @@ const SignupPage = () => {
   };
 
   return (
-    <main>
-      <section>
-        <div>
-          <div>
-            <h1> FocusApp </h1>
-            <form>
-              <div>
-                <label htmlFor="email-address">Email address</label>
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  placeholder="Email address"
-                />
-              </div>
+    <Fragment>
+      <main className="loginBody">
+        <div className="container">
+          <div className="screen">
+            <div className="screen__content">
+              <form className="login">
+                <Typography variant="h4" gutterBottom textAlign="center">
+                  Jardin-Trip
+                </Typography>
+                <div className="login__field">
+                  <i className="login__icon fas fa-user"></i>
 
-              <div>
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  placeholder="Password"
-                />
-              </div>
-
-              <button type="submit" onClick={onSubmit}>
-                Sign up
-              </button>
-            </form>
-
-            <p>
-              Already have an account? <NavLink to="/">Sign in</NavLink>
-            </p>
+                  <input
+                    className="login__input"
+                    id="email-address"
+                    name="email"
+                    type="email"
+                    required
+                    placeholder="Email address"
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+                <div className="login__field">
+                  <i className="login__icon fas fa-lock"></i>
+                  <input
+                    className="login__input"
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <button className="button login__submit" onClick={onSubmit}>
+                  <span className="button__text">Sign up</span>
+                  <i className="button__icon fas fa-chevron-right"></i>
+                </button>
+              </form>
+              <Toolbar>
+                <Typography variant="button" display="block" gutterBottom>
+                  Already have an account? <NavLink to="/">Sign in</NavLink>
+                </Typography>
+              </Toolbar>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
+      </main>
+    </Fragment>
   );
 };
 

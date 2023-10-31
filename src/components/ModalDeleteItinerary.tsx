@@ -2,24 +2,30 @@ import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
-import { Button, Typography } from "@mui/material";
+import { Button, Toolbar, Typography } from "@mui/material";
+import IItinerary from "../utils/interfaces/IItinerary";
+import useDeleteItinerary from "../hooks/useDeleteItinerary";
+import { ItinenaryEnum } from "../utils/enums/ItinearyEnum";
 
 type Props = {
   open: boolean;
   handleClose: () => void;
-  handleOpen: () => void;
+  itinerarySelected: IItinerary;
+  type: ItinenaryEnum;
 };
 
 export default function ModalDeleteItinerary(props: Props) {
-  const { open, handleClose, handleOpen } = props;
+  const { open, handleClose, itinerarySelected, type } = props;
+
+  const { deleteElement } = useDeleteItinerary();
+
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={handleClose}
+        onClose={() => handleClose()}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -31,11 +37,31 @@ export default function ModalDeleteItinerary(props: Props) {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
+              Are you secure to erase {itinerarySelected.name}?
             </Typography>
-            <Typography id="transition-modal-description" sx={{ mt: 2 }}>
-              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-            </Typography>
+            <Toolbar sx={{ display: "flex", justifyContent: "space-around" }}>
+              <Button
+                variant="contained"
+                color="success"
+                size="small"
+                onClick={() => handleClose()}
+              >
+                <Typography variant="inherit" noWrap component="div">
+                  Cancel
+                </Typography>
+              </Button>
+              &nbsp;
+              <Button
+                variant="contained"
+                color="error"
+                size="small"
+                onClick={() => deleteElement(type, itinerarySelected)}
+              >
+                <Typography variant="inherit" noWrap component="div">
+                  Delete
+                </Typography>
+              </Button>
+            </Toolbar>
           </Box>
         </Fade>
       </Modal>
